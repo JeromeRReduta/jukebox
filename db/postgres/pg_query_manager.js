@@ -30,7 +30,7 @@ export const queryStrings = {
                                                                                 'name', t.name,
                                                                                 'duration_ms', t.duration_ms,
                                                                                 'playlist_id', pt.playlist_id))
-                                                                                AS included_tracks
+                                                                                AS tracks_included
     FROM playlists AS p
     JOIN playlists_tracks AS pt ON pt.playlist_id = p.id
     JOIN tracks AS t ON pt.track_id = t.id
@@ -43,7 +43,7 @@ export const queryStrings = {
                                                                                 'name', t.name,
                                                                                 'duration_ms', t.duration_ms,
                                                                                 'playlist_id', pt.playlist_id))
-                                                                                AS included_tracks
+                                                                                AS tracks_included
     FROM playlists AS p
     JOIN playlists_tracks AS pt ON pt.playlist_id = p.id
     JOIN tracks AS t ON pt.track_id = t.id
