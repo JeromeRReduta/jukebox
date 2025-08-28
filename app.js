@@ -5,6 +5,7 @@ import express from "express";
 import PgPlaylistRepo from "#db/postgres/pg_playlist_repo";
 import PgTrackRepo from "#db/postgres/pg_track_repo";
 import trackRouter from "./api/tracks.js";
+import playlistRouter from "./api/playlists.js";
 const app = express();
 
 app.use(express.json());
@@ -17,6 +18,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/tracks", trackRouter);
+app.use("/playlists", playlistRouter);
 
 app.use((err, req, res, next) => {
   console.error(err);

@@ -5,7 +5,7 @@ import express from "express";
 const router = express.Router();
 
 router.use((req, res, next) => {
-  if (!req.playlistRepo || !req.trackRepo) {
+  if (!req.trackRepo) {
     throwMiddlewareError({
       code: 500,
       message: "Someone forgot to link the repo properly - it's me :)",
