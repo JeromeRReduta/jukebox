@@ -1,4 +1,4 @@
-export default function throwMiddleWareError({
+export default function throwMiddlewareError({
   code = 500,
   message = "Broken",
 }) {
