@@ -5,7 +5,7 @@ import requireBody from "#db/middleware/require_body";
 
 const router = express.Router();
 router.use((req, res, next) => {
-  if (!req.playlistRepo) {
+  if (!req.playlistRepo || !req.playlistsTracksRepo) {
     throwMiddlewareError({
       code: 500,
       message: "Someone forgot to link the repo properly - it's me :)",
@@ -19,17 +19,13 @@ router
   .get(async (req, res) => {
     res.status(200).send(await req.playlistRepo.getAllAsync());
   })
-  .post(
-    requireBody("name", "description"),
-
-    async (req, res) => {
-      const newPlaylist = await req.playlistRepo.createAsync({
-        name: req.body.name,
-        description: req.body.description,
-      });
-      res.status(200).send(newPlaylist);
-    }
-  );
+  .post(requireBody("name", "description"), async (req, res) => {
+    const newPlaylist = await req.playlistRepo.createAsync({
+      name: req.body.name,
+      description: req.body.description,
+    });
+    res.status(200).send(newPlaylist);
+  });
 
 router.param("id", requireValidId);
 router.param("id", async (req, res, next, id) => {
@@ -46,17 +42,30 @@ router.param("id", async (req, res, next, id) => {
     next(e);
   }
 });
-
+router.body;
 router.route("/:id").get((req, res, next) => {
   res.status(200).send(req.playlist);
 });
 
-router.route("/:id/tracks").get(async (req, res, next) => {
-  const playlistWithTracks = await req.playlistRepo.getAllAsync({
-    id: +req.params.id,
-    includeTracks: true,
-  });
-  res.status(200).send(playlistWithTracks);
-});
+router
+  .route("/:id/tracks")
+  .get(async (req, res, next) => {
+    const playlistWithTracks = await req.playlistRepo.getAllAsync({
+      id: +req.params.id,
+      includeTracks: true,
+    });
+    res.status(200).send(playlistWithTracks);
+  })
+  .post(
+    requireBody("trackId"),
+    (req, res, next) => requireValidId(req, res, next, +req.body.trackId), // cant tell if this is unholy or not
+    async (req, res, next) => {
+      const newRelation = await req.playlistsTracksRepo.createAsync({
+        playlist_id: +req.params.id,
+        track_id: +req.body.trackId,
+      });
+      res.status(200).send(newRelation);
+    }
+  );
 
 export default router;
