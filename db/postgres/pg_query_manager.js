@@ -54,6 +54,10 @@ export const queryStrings = {
   allFromTracks: `SELECT * FROM tracks`,
   oneFromTracks: `SELECT * FROM tracks
                     WHERE id = $1`,
+  allFromPlaylistsTracks: `SELECT * FROM playlists_tracks`,
+  oneFromPlaylistsTracks: `SELECT * FROM playlists_tracks
+                            WHERE playlists_id = $1
+                                AND tracks_id = $2`,
   insertIntoPlaylists: `INSERT INTO playlists (name, description)
                             VALUES ($1, $2)
                             RETURNING *`,
