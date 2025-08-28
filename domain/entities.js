@@ -16,8 +16,8 @@ export function createPlaylist({ id, name, description, tracks = null }) {
  * @typedef Track
  * @property {Number} id
  * @property {String} name
- * @property {Number} durationMs
+ * @property {Number} duration_ms
  */
-export function createTrack({ id, name, durationMs }) {
-  return { id, name, durationMs };
+export function createTrack({ id, name, duration_ms }) {
+  return { id, name, duration_ms };
 }

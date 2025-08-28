@@ -12,5 +12,5 @@
  * @property {DbContext} dbContext obj we delegate database queries to
  * @function getAllAsync () => Track[] Gets all tracks
  * @function getByIdAsync ({id}) => Track Gets one track by id
- * @function createAsync ({name, durationMs}) => Track Adds a track to DB and returns created obj\
+ * @function createAsync ({name, duration_ms}) => Track Adds a track to DB and returns created obj\
  */

@@ -1,5 +1,3 @@
-import { text } from "express";
-
 export default class PgQueryManager {
   #db;
 
@@ -7,7 +5,7 @@ export default class PgQueryManager {
     this.#db = db;
   }
 
-  async queryAll({ queryString, values, isPlural }) {
+  async queryAll({ queryString, values }) {
     const { rows } = await this.#db.query({
       text: queryString,
       values: values,
@@ -56,12 +54,13 @@ export const queryStrings = {
   allFromTracks: `SELECT * FROM tracks`,
   oneFromTracks: `SELECT * FROM tracks
                     WHERE id = $1`,
+  insertIntoPlaylists: `INSERT INTO playlists (name, description)
+                            VALUES ($1, $2)
+                            RETURNING *`,
+  insertIntoTracks: `INSERT INTO tracks (name, duration_ms)
+                        VALUES ($1, $2)
+                        RETURNING *`,
+  insertIntoPlaylistsTracks: `INSERT INTO playlists_tracks (playlist_id, track_id)
+                                    VALUES ($1, $2)
+                                    RETURNING *`,
 };
-//   allFromPlaylistsWithTracks: `
-//   SELECT P.id, P.name, P.description, JSON_AGG(T.*) AS tracks_included
-//                                 FROM playlists AS P
-//                                 JOIN playlists_tracks AS PT ON P.id = PT.playlist_id
-//                                 JOIN tracks AS T ON T.id = PT.track_id
-//                                 GROUP BY P.id, P.name, P.description
-//                                 ORDER BY P.id
-//                                 `,
